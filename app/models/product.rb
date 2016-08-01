@@ -8,15 +8,16 @@ class Product < ActiveRecord::Base
   end
 
   def self.bought_this_month
-    joins(:carts).where("carts.created_at" => 1.month.ago..DateTime.now)
+    # joins(:carts).where("carts.created_at" => 1.month.ago..DateTime.now)
+    joins(:carts).where(:carts => {:created_at => 1.month.ago..DateTime.now})
+  end
+
+  def self.expensive
+    where(:price => 100..2000)
   end
 
   def self.starting_with_the_letter(letter)
     where("name LIKE ?", "#{letter}%")
-  end
-
-  def self.expensive
-    where(:price => 100..1000)
   end
 
   def self.expensive_products_bought_this_month
