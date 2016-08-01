@@ -10,8 +10,15 @@ class Cart < ActiveRecord::Base
     # 3 - Sum the price of each product
   end 
 
+  def self.most_expensive
+    joins(:products).group(:cart_id).order('products.price').limit(1).sum(:price)
+  end
+
+  def total_cost
+    products.sum(:price)
+  end
+
   def self.summary
-    #joins(:line_items => :products) == joins(:products)
     joins(:products).group(:cart_id).sum(:price)
   end
 end
